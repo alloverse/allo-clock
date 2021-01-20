@@ -49,7 +49,7 @@ function updateTime()
     
     local m = mat4.identity()
     mat4.translate(m, m, vec3(0, 0.14, 0))
-    mat4.rotate(m, m, date.hour * 6.28/24, vec3(0, 0, -1))
+    mat4.rotate(m, m, date.hour * 6.28/12 + (date.min * 6.28/60)/12, vec3(0, 0, -1))
     mat4.translate(m, m, vec3(0, 0.1, 0))
     hoursArm:setTransform(m)
 
