@@ -18,7 +18,9 @@ for i=1,12 do
         :rotate((6.28/12)*i, 0,0,1)
         :move( 0, 0.1, 0)
     )
-    mainView:addSubview(indicator)
+    app:scheduleAction(0.1*(12-i), false, function()
+        mainView:addSubview(indicator)
+    end)
 end
 
 local hoursArm = ui.Cube(
