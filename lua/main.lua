@@ -1,14 +1,16 @@
 local vec3 = require("modules.vec3")
 local mat4 = require("modules.mat4")
 local ClockView = require("clockview")
+local SettingsView = require("settingsview")
 
 local client = Client(
     arg[2], 
     "allo-clock"
 )
 local app = App(client)
-local assets = {
+assets = {
     quit = ui.Asset.File("images/quit.png"),
+    settings = ui.Asset.File("images/settings.png"),
 }
 app.assetManager:add(assets)
 
@@ -24,6 +26,17 @@ local quitButton = mainView:addSubview(
 quitButton:setDefaultTexture(assets.quit)
 quitButton.onActivated = function()
     app:quit()
+end
+
+local settingsButton = mainView:addSubview(
+    ui.Button(ui.Bounds{size=ui.Size(0.18,0.18,0.05)}:move( 0.45,-0.48,0.025))
+)
+settingsButton:setDefaultTexture(assets.settings)
+settingsButton.onActivated = function(hand)
+    local handPose = ui.Pose(hand.components.transform:transformFromWorld())
+    local bounds = ui.Bounds{size=ui.Size(0.5,0.5,0.05), pose=handPose}:move(0, 0, -0.6)
+    local settings = SettingsView(bounds, clock)
+    app:addRootView(settings)
 end
 
 app.mainView = mainView
