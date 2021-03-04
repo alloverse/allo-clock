@@ -8,9 +8,10 @@ class.SettingsView(ui.Cube)
 function SettingsView:_init(bounds, clock)
     self:super(bounds)
     self.grabbable = true
+    self.clock = clock
 
     self:addSubview(ui.Label{
-        bounds=ui.Bounds{size=ui.Size(1, 0.05, 0.05)}:move(0,0.18,0.051),
+        bounds=ui.Bounds{size=ui.Size(bounds.size.width, 0.05, 0.05)}:move(0,0.18,0.051),
         text="Clock settings",
         color={0,0,0,1}
         --,text=,lineheight=,wrap=,halign=,color={r,g,b,a}}
@@ -23,6 +24,40 @@ function SettingsView:_init(bounds, clock)
     closeButton.onActivated = function()
         self:removeFromSuperview()
     end
+
+    self.tzLabel = self:addSubview(ui.Label{
+        bounds=ui.Bounds{size=ui.Size(bounds.size.width, 0.05, 0.05)}:move(0.05, 0.08, 0.051),
+        text="UTC+0",
+        color={0,0,0,1},
+        halign="left"
+    })
+    self.addButton = self:addSubview(
+        ui.Button(ui.Bounds{size=ui.Size(0.10,0.10,0.05)}:move( 0.18,0.08,0.025))
+    )
+    self.addButton.label:setText("+")
+    self.addButton.label.color = {0,0,0,1}
+    self.addButton:setColor({130/255, 191/255, 188/255, 1.0})
+    self.addButton.onActivated = function()
+        self.clock:setTimezoneOffset(self.clock.tzOffset + 30 * 60)
+        self:updateLabel()
+    end
+
+    self.subButton = self:addSubview(
+        ui.Button(ui.Bounds{size=ui.Size(0.10,0.10,0.05)}:move( 0.08,0.08,0.025))
+    )
+    self.subButton.label:setText("-")
+    self.subButton.label.color = {0,0,0,1}
+    self.subButton:setColor({130/255, 191/255, 188/255, 1.0})
+    self.subButton.onActivated = function()
+        self.clock:setTimezoneOffset(self.clock.tzOffset - 30 * 60)
+        self:updateLabel()    
+    end
+    self:updateLabel()
+end
+
+function SettingsView:updateLabel()
+    local text = string.format("UTC%+.1f", self.clock.tzOffset/(60*60))
+    self.tzLabel:setText(text)
 end
 
 

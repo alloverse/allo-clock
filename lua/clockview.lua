@@ -24,6 +24,13 @@ function ClockView:_init(bounds)
         --,text=,lineheight=,wrap=,halign=,color={r,g,b,a}}
     })
 
+    self.tzOffset = 0
+
+    self:updateTime()
+end
+
+function ClockView:setTimezoneOffset(tzOffset)
+    self.tzOffset = tzOffset
     self:updateTime()
 end
 
@@ -45,7 +52,8 @@ function ClockView:awake()
 end
 
 function ClockView:updateTime()
-    local date = os.date("*t")
+    local now = os.time() + self.tzOffset
+    local date = os.date("!*t", now) 
     
     local m = mat4.identity()
     mat4.translate(m, m, vec3(0, 0.14, 0))
@@ -65,7 +73,7 @@ function ClockView:updateTime()
     mat4.translate(m, m, vec3(0, 0.1, 0))
     self.secondsArm:setTransform(m)
 
-    self.digitalTime:setText(os.date("%H:%M:%S"))
+    self.digitalTime:setText(os.date("!%H:%M:%S", now))
 end
 
 return ClockView
