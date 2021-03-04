@@ -33,10 +33,8 @@ local settingsButton = mainView:addSubview(
 )
 settingsButton:setDefaultTexture(assets.settings)
 settingsButton.onActivated = function(hand)
-    local handPose = ui.Pose(hand.components.transform:transformFromWorld())
-    local bounds = ui.Bounds{size=ui.Size(0.5,0.5,0.05), pose=handPose}:move(0, 0, -0.6)
-    local settings = SettingsView(bounds, clock)
-    app:addRootView(settings)
+    local settings = SettingsView(ui.Bounds{size=ui.Size(0.5,0.5,0.05)}, clock)
+    app:openPopupNearHand(settings, hand, 0.6)
 end
 
 app.mainView = mainView
