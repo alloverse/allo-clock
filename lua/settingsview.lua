@@ -9,6 +9,7 @@ function SettingsView:_init(bounds, clock)
     self:super(bounds)
     self.grabbable = true
     self.clock = clock
+    self.color = ui.Color.alloLightGray()
 
     self:addSubview(ui.Label{
         bounds=ui.Bounds{size=ui.Size(bounds.size.width, 0.05, 0.05)}:move(0,0.18,0.051),
@@ -36,7 +37,7 @@ function SettingsView:_init(bounds, clock)
     )
     self.addButton.label:setText("+")
     self.addButton.label.color = {0,0,0,1}
-    self.addButton:setColor({130/255, 191/255, 188/255, 1.0})
+    self.addButton:setColor(ui.Color.alloDarkPink())
     self.addButton.onActivated = function()
         self.clock:setTimezoneOffset(self.clock.tzOffset + 30 * 60)
         self:updateLabel()
@@ -47,7 +48,7 @@ function SettingsView:_init(bounds, clock)
     )
     self.subButton.label:setText("-")
     self.subButton.label.color = {0,0,0,1}
-    self.subButton:setColor({130/255, 191/255, 188/255, 1.0})
+    self.subButton:setColor(ui.Color.alloDarkPink())
     self.subButton.onActivated = function()
         self.clock:setTimezoneOffset(self.clock.tzOffset - 30 * 60)
         self:updateLabel()    
